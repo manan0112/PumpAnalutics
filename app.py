@@ -10,12 +10,44 @@ import pandas as pd     # For data manipulation and analysis
 from fpdf import FPDF   # For PDF generation
 import io              # For file input/output operations
 import os              # For file system operations
+import base64          # For image encoding
 
 # Configure Streamlit page settings
 st.set_page_config(page_title="Smart Pump Test Report", layout="wide")
 
+# Display logo at the top center
+logo_path = "assets/logo.png"
+if os.path.exists(logo_path):
+    _, col2, _ = st.columns([1, 2, 1])
+    with col2:
+        with open(logo_path, "rb") as img_file:
+            logo_base64 = base64.b64encode(img_file.read()).decode()
+        
+        st.markdown(
+            f"""
+            <div style="
+                display: flex;
+                justify-content: center;
+                margin: 20px 0;
+            ">
+                <div style="
+                    background-color: white;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    display: inline-block;
+                ">
+                    <img src="data:image/png;base64,{logo_base64}" width="280" style="display: block;">
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+else:
+    st.warning("Logo file not found at assets/logo.png")
+
 # Display main title
-st.title("🔧 Smart Pump Performance Report Generator")
+st.title("🔧 VBC Hydraulics Pump Performance Report Generator")
 
 # =============================================================================
 # MAIN DATA ANALYSIS FUNCTION
