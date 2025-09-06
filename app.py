@@ -487,21 +487,21 @@ def generate_report_content(pump_data, total_pumps, amp_analysis, efficiency_ran
 # =============================================================================
 # PDF REPORT GENERATION FUNCTION
 # =============================================================================
-def create_pdf_report(report_content, customer_name, order_no):
+def create_pdf_report(report_content, customer_name, pump_identifier):
     """
     Creates a professional PDF report from the text content.
     
     This function:
     1. Creates a new PDF document with company branding
-    2. Adds customer information and order details
+    2. Adds customer information and pump_identifier
     3. Formats the report content with appropriate fonts and styling
     4. Returns the PDF as bytes for download
     
     Args:
         report_content: String containing the formatted report text
         customer_name: Customer name for the header
-        order_no: Order number for the header
-        
+        pump_identifier: Pump identifier for the header
+
     Returns:
         PDF file as bytes (ready for download)
     """
@@ -525,7 +525,7 @@ def create_pdf_report(report_content, customer_name, order_no):
     # Step 4: Add customer information
     pdf.set_font("Arial", "", 12)  # Regular, 12pt font
     pdf.cell(200, 10, f"Customer: {customer_name}", ln=True)
-    pdf.cell(200, 10, f"Order No.: {order_no}", ln=True)
+    pdf.cell(200, 10, f"Pump Identifier: {pump_identifier}", ln=True)
     pdf.ln(10)  # Add more space before report content
     
     # Step 5: Process and add report content
@@ -570,7 +570,7 @@ def create_pdf_report(report_content, customer_name, order_no):
 # Set up company branding and customer input fields
 company_name = "VBC Hydraulics"  # Company name for reports
 customer_name = st.text_input("Customer Name", "Customer XYZ")  # Input field for customer
-order_no = st.text_input("Order No.", "ORD-1234")  # Input field for order number
+pump_identifier = st.text_input("Pump Identifier", "PUMP-1234")  # Input field for pump identifier
 
 # --- FILE UPLOAD SECTION ---
 # Create file uploader widget that accepts Excel files
@@ -629,13 +629,13 @@ if uploaded_file:
         # Provide button to generate and download PDF report
         if st.button("📥 Export PDF Report"):
             # Generate PDF with current report content and customer info
-            pdf_bytes = create_pdf_report(report_content, customer_name, order_no)
-            
+            pdf_bytes = create_pdf_report(report_content, customer_name, pump_identifier)
+
             # Create download button for the PDF
             st.download_button(
                 "⬇️ Download PDF Report",
                 data=pdf_bytes,
-                file_name=f"Smart_Pump_Report_{order_no}.pdf",  # Dynamic filename
+                file_name=f"Smart_Pump_Report_{pump_identifier}.pdf",  # Dynamic filename
                 mime="application/pdf"
             )
     else:
