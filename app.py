@@ -343,17 +343,12 @@ def analyze_efficiency_distribution(pump_data):
                     # Step 5b: Count individual pump efficiencies
                     # Each tandem unit contributes 2 individual pump readings
                     for eff in [p1_eff, p2_eff]:
-                            if eff < 90:
-                                # Add a 'Failed' label for below 90% efficiency
-                                efficiency_ranges.setdefault('failed', 0)
-                                efficiency_ranges['failed'] += 1
-                                # Optionally, you can store failed units for further reporting
-                            elif 90 <= eff < 92:
-                                efficiency_ranges['90_to_92'] += 1
-                            elif 92 <= eff < 94:
-                                efficiency_ranges['92_to_94'] += 1
-                            elif eff >= 94:
-                                efficiency_ranges['94_plus'] += 1
+                        if 90 <= eff < 92:
+                            efficiency_ranges['90_to_92'] += 1
+                        elif 92 <= eff < 94:
+                            efficiency_ranges['92_to_94'] += 1
+                        elif eff >= 94:
+                            efficiency_ranges['94_plus'] += 1
                     
                     # Count individual pumps (2 per tandem unit)
                     total_individual_pumps += 2
@@ -462,10 +457,6 @@ def generate_report_content(pump_data, total_pumps, amp_analysis, efficiency_ran
     report_lines.append(f"90% - 92%:     {efficiency_ranges['90_to_92']} pumps")
     report_lines.append(f"92% - 94%:     {efficiency_ranges['92_to_94']} pumps")
     report_lines.append(f"94% and above: {efficiency_ranges['94_plus']} pumps")
-    # Show failed pumps if present
-    if 'failed' in efficiency_ranges:
-        # For Streamlit, use markdown for red color, for PDF just label as FAILED
-        report_lines.append(f"FAILED (<90% efficiency): {efficiency_ranges['failed']} pumps")
     
     # Add tandem efficiency matching analysis
     if tandem_matching_analysis and has_tandem:
