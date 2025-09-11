@@ -561,11 +561,6 @@ def create_pdf_report(report_content, customer_name, pump_identifier):
         elif line.startswith("-"):
             # Underlines - just add minimal space
             pdf.ln(1)
-        elif line.startswith("FAILED (<90% efficiency):"):
-            # Show failed line in red color
-            pdf.set_text_color(255, 0, 0)
-            pdf.cell(200, 5, line, ln=True)
-            pdf.set_text_color(0, 0, 0)  # Reset to black
         else:
             # Regular content lines
             pdf.cell(200, 5, line, ln=True)
